@@ -3,7 +3,7 @@ package com.ubs.opsit.interviews.support;
 import org.jbehave.core.ConfigurableEmbedder;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.io.LoadFromURL;
+import org.jbehave.core.io.StoryLoader;
 import org.jbehave.core.reporters.FilePrintStreamFactory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
@@ -32,13 +32,15 @@ public final class BehaviouralTestEmbedder extends ConfigurableEmbedder {
 
     private String wildcardStoryFilename;
     private InjectableStepsFactory stepsFactory;
+    private StoryLoader storyLoader;
 
 
-    private BehaviouralTestEmbedder() {
+    private BehaviouralTestEmbedder(StoryLoader aStoryLoader) {
+    	storyLoader = aStoryLoader;
     }
 
-    public static BehaviouralTestEmbedder aBehaviouralTestRunner() {
-        return new BehaviouralTestEmbedder();
+    public static BehaviouralTestEmbedder aBehaviouralTestRunner(StoryLoader aStoryLoader) {
+        return new BehaviouralTestEmbedder(aStoryLoader);
     }
 
     @Override
@@ -59,7 +61,7 @@ public final class BehaviouralTestEmbedder extends ConfigurableEmbedder {
 
     public Configuration configuration() {
         return new MostUsefulConfiguration()
-                .useStoryLoader(new LoadFromURL())
+                .useStoryLoader(storyLoader)
                 .useParameterConverters(new ParameterConverters().addConverters(new SandboxDateConverter()))
                 .useStoryReporterBuilder(new SandboxStoryReporterBuilder());
     }

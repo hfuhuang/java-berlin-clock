@@ -17,14 +17,14 @@ OOOO
 OOOOOOOOOOO
 OOOO
 
-Scenario: Middle of the afternoon
-When the time is 13:17:01
+Scenario: Just after midnight
+When the time is 00:00:01
 Then the clock should look like
 O
-RROO
-RRRO
-YYROOOOOOOO
-YYOO
+OOOO
+OOOO
+OOOOOOOOOOO
+OOOO
 
 Scenario: Just before midnight
 When the time is 23:59:59
@@ -35,7 +35,7 @@ RRRO
 YYRYYRYYRYY
 YYYY
 
-Scenario: Midnight
+Scenario: Midnight at 24:00:00
 When the time is 24:00:00
 Then the clock should look like
 Y
@@ -44,5 +44,44 @@ RRRR
 OOOOOOOOOOO
 OOOO
 
+Scenario: Just at noon 12 o'clock
+When the time is 12:00:00
+Then the clock should look like
+Y
+RROO
+RROO
+OOOOOOOOOOO
+OOOO
 
+Scenario: Middle of the afternoon
+When the time is 13:17:01
+Then the clock should look like
+O
+RROO
+RRRO
+YYROOOOOOOO
+YYOO
 
+Scenario: Midnight Wrong Time
+When the time is 24:00:01
+Then time format exception like
+Text '24:00:01' could not be parsed
+
+Scenario: Wrong Format too short
+When the time is 23:00
+Then time format exception like
+Text '23:00' could not be parsed
+
+Scenario: Wrong Format with miliseconds
+When the time is 23:00:00.001
+Then time format exception like
+Text '23:00:00.001' could not be parsed
+
+Scenario: defined with examples
+When the time is <time>
+Then the clock should look like <result>
+
+Examples:
+|time|result|
+|12:00:00|Y;RROO;RROO;OOOOOOOOOOO;OOOO|
+|12:00:01|O;RROO;RROO;OOOOOOOOOOO;OOOO|
