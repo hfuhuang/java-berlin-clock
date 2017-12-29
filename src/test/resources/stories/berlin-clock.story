@@ -77,6 +77,21 @@ When the time is 23:00:00.001
 Then time format exception like
 Text '23:00:00.001' could not be parsed
 
+Scenario: Wrong Format with 60 in seconds
+When the time is 00:00:60
+Then time format exception like
+Text '00:00:60' could not be parsed
+
+Scenario: Wrong Format with 60 in minutes
+When the time is 00:60:00
+Then time format exception like
+Text '00:60:00' could not be parsed
+
+Scenario: Wrong Format with -1 in hours
+When the time is -1:00:00
+Then time format exception like
+Text '-1:00:00' could not be parsed
+
 Scenario: defined with examples
 When the time is <time>
 Then the clock should look like <result>
